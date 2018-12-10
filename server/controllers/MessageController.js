@@ -1,8 +1,9 @@
 const twilio = require('twilio');
 const { User, Contact, Message, ReadTime } = require('../database/models');
 const activeContact = require('../repositories/ActiveContact');
-const twilioService = require('../services/twilio');
+const twilioService = require('../services/twilioService');
 const clientsList = require('../repositories/ClientsList');
+const { throwError } = require('../helpers/errorHelper');
 
 const twilioAccountSid = process.env.TWILIO_ACCOUND_SID;
 const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
@@ -21,6 +22,7 @@ MessageController.sendMessageToNewContact = async (req, res, next) => {
     const findOrCreateUserRes = await User.findOrCreate({
       where: { number }
     });
+    if (!findOrCreateUserRes) throwError('User not found', 404);
     const user = findOrCreateUserRes[0].dataValues;
     const createContactResponse = await Contact.findOrCreate({
       where: {
@@ -56,7 +58,11 @@ MessageController.sendMessageToOldContact = async (req, res, next) => {
   let { message: body } = req.body;
   body = body.trim();
   try {
+    if (isNaN(Number(contactId))) {
+      throwError('User id can only be an integer', 400);
+    }
     const contact = await User.findById(contactId);
+    if (!contact) throwError('User not found', 404);
     const number = contact.dataValues.number;
     // send the message to twilio
     await twilioService.sendMessage(client, body, number, owner.number);
@@ -81,6 +87,7 @@ MessageController.receiveMessage = async (req, res, next) => {
     const findOwnerResponse = await User.findOne({ where: {
       number: ownerNumber,
     }});
+    if (!findOwnerResponse) throwError('User not found', 404);
     const ownerId = findOwnerResponse.dataValues.id;
     const findOrCreateUserRes = await User.findOrCreate({
       where: { number }
@@ -125,7 +132,7 @@ MessageController.receiveMessage = async (req, res, next) => {
         global.io.sockets.connected[clientSocket].emit('new message', message);
       });
     }
-    // respond to twilio with empty body
+    // respond to twilio with empty xml response object
     res.writeHead(200, { 'Content-Type': 'text/xml' });
     res.end(`<?xml version="1.0" encoding="UTF-8"?>
       <Response></Response>`);

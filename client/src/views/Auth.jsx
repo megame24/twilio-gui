@@ -5,6 +5,7 @@ import Input from '../components/Input';
 import Loading from '../components/Loading';
 import authActions from '../actions/authActions';
 import numberActions from '../actions/numberActions';
+import ErrorMessage from '../components/ErrorMessage';
 
 /**
  * Auth component
@@ -17,7 +18,7 @@ export class Auth extends React.Component {
     super();
     this.state = {
       formData: {
-        authToken: '',
+        password: '',
         number: '',
       },
     };
@@ -31,8 +32,7 @@ export class Auth extends React.Component {
    * @returns {null} null
    */
   componentDidMount() {
-    const { hideSideNav, getAvailableNums } = this.props;
-    hideSideNav();
+    const { getAvailableNums } = this.props;
     getAvailableNums();
   }
 
@@ -44,19 +44,9 @@ export class Auth extends React.Component {
     const { availableNums } = this.props;
     if (nextProps.availableNums !== availableNums) {
       this.setState({
-        formData: { authToken: '', number: nextProps.availableNums[0] }
+        formData: { password: '', number: nextProps.availableNums[0] }
       });
     }
-  }
-
-  /**
-   * @returns {undefined}
-   */
-  componentWillUnmount() {
-    const {
-      unhideSideNav
-    } = this.props;
-    unhideSideNav();
   }
 
   /**
@@ -92,10 +82,16 @@ export class Auth extends React.Component {
    * @return {undefined}
    */
   render() {
-    const { formData: { authToken, number } } = this.state;
-    const { isLoading, availableNums } = this.props;
+    const { formData: { password, number } } = this.state;
+    const { isLoading, availableNums, errors } = this.props;
+    errors.time = new Date();
     return (
       <div id="login-form">
+        <div className="errors">
+          <ErrorMessage
+            errors={errors}
+          />
+        </div>
         <Loading isLoading={isLoading} />
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="number">Select a number</label>
@@ -116,10 +112,10 @@ export class Auth extends React.Component {
           }
           <Input
             type="password"
-            placeholder="Auth token"
+            placeholder="Password"
             className="input"
-            name="authToken"
-            value={authToken}
+            name="password"
+            value={password}
             onChange={this.handleChange}
           />
           <input
@@ -137,27 +133,28 @@ export class Auth extends React.Component {
 Auth.propTypes = {
   login: PropTypes.func.isRequired,
   getAvailableNums: PropTypes.func.isRequired,
-  hideSideNav: PropTypes.func.isRequired,
-  unhideSideNav: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  errors: PropTypes.shape({
+    message: PropTypes.string
+  }),
   availableNums: PropTypes.arrayOf(PropTypes.string)
 };
 
 Auth.defaultProps = {
   availableNums: [],
+  errors: {},
 };
 
 export const mapStateToProps = ({
   number: { availableNums },
-  auth: { isLoading },
+  auth: { isLoading, errors },
 }) => ({
   availableNums,
   isLoading,
+  errors,
 });
 
 export default connect(mapStateToProps, {
-  hideSideNav: authActions.hideSideNav,
-  unhideSideNav: authActions.unhideSideNav,
   login: authActions.login,
   getAvailableNums: numberActions.getAvailableNums,
 })(Auth);

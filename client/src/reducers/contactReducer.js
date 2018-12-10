@@ -2,7 +2,8 @@ import types from '../actions/actionTypes';
 
 const {
   GET_CONTACTS, CLEAR_ACTIVE_CONTACT, GET_CONTACT, GET_CONTACT_MESSAGES,
-  APPEND_TO_CONTACT_MESSAGES, UPDATE_CONTACT, GET_CONTACT_NOT_ACTIVE
+  APPEND_TO_CONTACT_MESSAGES, UPDATE_CONTACT,
+  GET_CONTACT_NOT_ACTIVE, RESET_SUCCESS
 } = types;
 
 export const initialContactsState = {
@@ -198,6 +199,11 @@ export const contactUpdate = (
   state = initialUpdateContactState, action = {}
 ) => {
   switch (action.type) {
+  case RESET_SUCCESS:
+    return {
+      ...state,
+      success: false,
+    };
   case `${APPEND_TO_CONTACT_MESSAGES}`:
     return {
       ...state,

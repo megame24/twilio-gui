@@ -7,6 +7,7 @@ import Input from '../components/Input';
 import messageActions from '../actions/messageActions';
 import Loading from '../components/Loading';
 import generalActions from '../actions/generalActions';
+import ErrorMessage from '../components/ErrorMessage';
 
 /**
  * NewContactMsg component
@@ -72,9 +73,15 @@ export class NewContactMsg extends React.Component {
    */
   render() {
     const { formData: { number, message } } = this.state;
-    const { isLoading, success, sentTo: { id } } = this.props;
+    const { errors, isLoading, success, sentTo: { id } } = this.props;
+    errors.time = new Date();
     return (
       <div id="new-contact">
+        <div className="errors">
+          <ErrorMessage
+            errors={errors}
+          />
+        </div>
         <Loading isLoading={isLoading} />
         <div className="contact-info">
           <Input
@@ -109,6 +116,9 @@ NewContactMsg.propTypes = {
   resetSuccess: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   success: PropTypes.bool.isRequired,
+  errors: PropTypes.shape({
+    message: PropTypes.string
+  }),
   sentTo: PropTypes.shape({
     number: PropTypes.string
   })
@@ -116,14 +126,16 @@ NewContactMsg.propTypes = {
 
 NewContactMsg.defaultProps = {
   sentTo: {},
+  errors: {},
 };
 
 export const mapStateToProps = ({
-  sentMessage: { success, isLoading, sentTo }
+  sentMessage: { success, isLoading, sentTo, errors }
 }) => ({
   success,
   isLoading,
-  sentTo
+  sentTo,
+  errors
 });
 
 export default connect(mapStateToProps, {

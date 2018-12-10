@@ -253,3 +253,26 @@
   display: block;
   margin-bottom: 20px;
 }
+
+.ui.negative.message {
+  background-color: #aa403f;
+  box-shadow: none;
+  color: rgb(255, 228, 228);
+}
+
+.ui.negative.message .header {
+  color: rgb(255, 228, 228);
+}
+
+.errors {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+}
+.ui.message {
+  min-width: 300px;
+  opacity: 0.8;
+  padding: 15px;
+  padding-right: 30px;
+}

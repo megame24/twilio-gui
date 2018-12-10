@@ -10,14 +10,6 @@ const logout = () => ({
   type: types.LOGOUT,
 });
 
-const hideSideNav = () => ({
-  type: types.HIDE_SIDE_NAV,
-});
-
-const unhideSideNav = () => ({
-  type: types.UN_HIDE_SIDE_NAV,
-});
-
 const getAvailableNums = () => ({
   type: types.GET_AVAILABLE_NUMBERS,
   payload: axiosInstance().get('/numbers'),
@@ -26,7 +18,5 @@ const getAvailableNums = () => ({
 export default {
   login,
   logout,
-  hideSideNav,
-  unhideSideNav,
   getAvailableNums,
 };

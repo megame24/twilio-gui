@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import SideNav from '../SideNav';
 
 export const UserRoute = ({
   token, component: Component, role, ...rest
@@ -10,7 +11,12 @@ export const UserRoute = ({
     {...rest}
     render={
       props => (
-        token ? <Component {...props} />
+        token ? (
+          <div>
+            <Route component={SideNav} />
+            <Component {...props} />
+          </div>
+        )
           : <Redirect to="/auth" />
       )}
   />

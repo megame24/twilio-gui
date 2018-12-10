@@ -31,7 +31,6 @@ export default (state = initialState, action = {}) => {
     };
   case `${NEW_CONTACT_MSG}_LOADING`:
   case `${OLD_CONTACT_MSG}_LOADING`: {
-    console.log('yo');
     return {
       ...state,
       isLoading: true,

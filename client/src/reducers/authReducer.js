@@ -1,8 +1,7 @@
 import types from '../actions/actionTypes';
 
 const {
-  PERSIST_LOGIN, LOGIN, CLEAR_ERRORS, HIDE_SIDE_NAV,
-  UN_HIDE_SIDE_NAV
+  PERSIST_LOGIN, LOGIN, CLEAR_ERRORS,
 } = types;
 
 export const initialState = {
@@ -13,21 +12,10 @@ export const initialState = {
     response: {},
   },
   token: '',
-  hideSideNav: '',
 };
 
 export default (state = initialState, action = {}) => {
   switch (action.type) {
-  case HIDE_SIDE_NAV:
-    return {
-      ...state,
-      hideSideNav: 'hide',
-    };
-  case UN_HIDE_SIDE_NAV:
-    return {
-      ...state,
-      hideSideNav: '',
-    };
   case CLEAR_ERRORS:
     return {
       ...state,

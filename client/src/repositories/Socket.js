@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
 import store from '../store';
 import types from '../actions/actionTypes';
+import axiosInstance from '../services/axiosInstance';
 
 /**
  * Socket
@@ -12,6 +13,7 @@ class Socket {
    */
   constructor(socket) {
     this.socket = socket;
+    this.sendOutReceivedMsgCalled = false;
   }
 
   /**
@@ -20,10 +22,44 @@ class Socket {
    */
   receiveNewMessage = (cb) => {
     this.socket.on('new message', (data) => {
-      console.log(data);
       cb(data);
     });
   }
+
+  /**
+   * @param {Object} state
+   * @param {String} token
+   * @returns {undefined}
+   */
+  sendOutReceivedMsg = (state, token) => {
+    if (this.sendOutReceivedMsgCalled) return;
+    this.sendOutReceivedMsgCalled = true;
+    this.receiveNewMessage((newMessage) => {
+      state = store.getState();
+      if (state.activeContact.activeContact.id === newMessage.fromId) {
+        newMessage.to = {
+          id: newMessage.toId
+        };
+        newMessage.from = {
+          id: newMessage.fromId
+        };
+        store.dispatch({
+          type: types.APPEND_TO_CONTACT_MESSAGES,
+          payload: newMessage,
+        });
+        this
+          .emitMessage('active contact', {
+            contactId: state.activeContact.activeContact.id,
+            token
+          }, () => { });
+      } else {
+        store.dispatch({
+          type: types.GET_CONTACTS,
+          payload: axiosInstance().get('/users'),
+        });
+      }
+    });
+  };
 
   /**
    * @returns {undefined}

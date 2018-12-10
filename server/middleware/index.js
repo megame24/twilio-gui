@@ -30,6 +30,9 @@ Middleware.prototype.validateNewContactMessage = async (req, res, next) => {
   message = message && message.trim() ? message : null;
   try {
     if (!number) throwError('number is required', 400);
+    if (isNaN(Number(number))) {
+      throwError('number must be an integer', 400);
+    }
     if (!message) throwError('message is required', 400);
     next();
   } catch (err) {

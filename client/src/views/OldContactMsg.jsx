@@ -9,6 +9,7 @@ import socket from '../repositories/Socket';
 import Textarea from '../components/Textarea';
 import messageActions from '../actions/messageActions';
 import generalActions from '../actions/generalActions';
+import ErrorMessage from '../components/ErrorMessage';
 
 /**
  * OldContactMsg component
@@ -145,15 +146,24 @@ export class OldContactMsg extends React.Component {
   render() {
     const {
       activeContactIsLoading, activeContact, contactMsgsIsLoading,
-      messages, sentMsgIsLoading,
+      messages, sentMsgIsLoading, activeContactErrors,
+      contactMsgErrors, sentMsgErrors,
     } = this.props;
+    activeContactErrors.time = new Date();
+    contactMsgErrors.time = new Date();
+    sentMsgErrors.time = new Date();
     const { formData: { message } } = this.state;
     return (
       <div id="old-contact">
+        <div className="errors">
+          <ErrorMessage errors={activeContactErrors} />
+          <ErrorMessage errors={sentMsgErrors} />
+          <ErrorMessage errors={contactMsgErrors} />
+        </div>
         <Loading
           isLoading={activeContactIsLoading
-          || contactMsgsIsLoading
-          || sentMsgIsLoading}
+            || contactMsgsIsLoading
+            || sentMsgIsLoading}
         />
         <div className="contact-info">
           <h3>
@@ -228,17 +238,35 @@ OldContactMsg.propTypes = {
   messages: PropTypes.shape({
     id: PropTypes.string
   }),
+  activeContactErrors: PropTypes.shape({
+    message: PropTypes.string
+  }),
+  contactMsgErrors: PropTypes.shape({
+    message: PropTypes.string
+  }),
+  sentMsgErrors: PropTypes.shape({
+    message: PropTypes.string
+  }),
 };
 
 OldContactMsg.defaultProps = {
   activeContact: {},
   messages: {},
+  activeContactErrors: {},
+  contactMsgErrors: {},
+  sentMsgErrors: {},
 };
 
 export const mapStateToProps = ({
-  activeContact: { activeContact, isLoading: activeContactIsLoading },
-  contactMessages: { messages, isLoading: contactMsgsIsLoading },
-  sentMessage: { success, isLoading: sentMsgIsLoading }, auth: { token }
+  activeContact: {
+    activeContact, isLoading: activeContactIsLoading,
+    errors: activeContactErrors },
+  contactMessages: {
+    messages, isLoading: contactMsgsIsLoading,
+    errors: contactMsgErrors },
+  sentMessage: { success, isLoading: sentMsgIsLoading,
+    errors: sentMsgErrors },
+  auth: { token }
 }) => ({
   activeContact,
   activeContactIsLoading,
@@ -247,6 +275,9 @@ export const mapStateToProps = ({
   sentMsgIsLoading,
   success,
   token,
+  activeContactErrors,
+  contactMsgErrors,
+  sentMsgErrors,
 });
 
 export default connect(mapStateToProps, {

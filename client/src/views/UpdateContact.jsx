@@ -6,6 +6,7 @@ import Input from '../components/Input';
 import Loading from '../components/Loading';
 import generalActions from '../actions/generalActions';
 import contactActions from '../actions/contactActions';
+import ErrorMessage from '../components/ErrorMessage';
 
 /**
  * UpdateContact component
@@ -20,7 +21,6 @@ export class UpdateContact extends React.Component {
     this.state = {
       formData: {
         name: '',
-        number: '',
       },
     };
     this.handleChange = this.handleChange.bind(this);
@@ -98,10 +98,21 @@ export class UpdateContact extends React.Component {
    * @return {undefined}
    */
   render() {
-    const { formData: { number, name } } = this.state;
-    const { isLoading, success } = this.props;
+    const { formData: { name } } = this.state;
+    const { isLoading, success,
+      notActiveContactErrs, contactUpdateErrs } = this.props;
+    notActiveContactErrs.time = new Date();
+    contactUpdateErrs.time = new Date();
     return (
       <div id="update-contact">
+        <div className="errors">
+          <ErrorMessage
+            errors={notActiveContactErrs}
+          />
+          <ErrorMessage
+            errors={contactUpdateErrs}
+          />
+        </div>
         <Loading isLoading={isLoading} />
         <form onSubmit={this.handleSubmit}>
           <Input
@@ -110,14 +121,6 @@ export class UpdateContact extends React.Component {
             className="input"
             name="name"
             value={name}
-            onChange={this.handleChange}
-          />
-          <Input
-            type="text"
-            placeholder="Phone number"
-            className="input"
-            name="number"
-            value={number}
             onChange={this.handleChange}
           />
           <input
@@ -141,6 +144,12 @@ UpdateContact.propTypes = {
   success: PropTypes.bool.isRequired,
   getContactNotActive: PropTypes.func.isRequired,
   updateContact: PropTypes.func.isRequired,
+  notActiveContactErrs: PropTypes.shape({
+    message: PropTypes.string
+  }),
+  contactUpdateErrs: PropTypes.shape({
+    message: PropTypes.string
+  }),
   notActiveContact: PropTypes.shape({
     number: PropTypes.string,
     name: PropTypes.string,
@@ -156,16 +165,20 @@ UpdateContact.defaultProps = {
   notActiveContact: {
     name: '',
     number: '',
-  }
+  },
+  notActiveContactErrs: {},
+  contactUpdateErrs: {},
 };
 
 export const mapStateToProps = ({
-  activeContact: { notActiveContact },
-  contactUpdate: { success, isLoading }
+  activeContact: { notActiveContact, errors: notActiveContactErrs },
+  contactUpdate: { success, isLoading, errors: contactUpdateErrs }
 }) => ({
   success,
   isLoading,
   notActiveContact,
+  notActiveContactErrs,
+  contactUpdateErrs
 });
 
 export default connect(mapStateToProps, {

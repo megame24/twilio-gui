@@ -2,10 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-// import io from 'socket.io-client';
 import contactActions from '../actions/contactActions';
 import authActions from '../actions/authActions';
 import socket from '../repositories/Socket';
+import ErrorMessage from './ErrorMessage';
 
 /**
  * SideNav component
@@ -47,9 +47,15 @@ export class SideNav extends React.Component {
    * @return {undefined}
    */
   render() {
-    const { contacts, hideSideNav } = this.props;
+    const { contacts, errors } = this.props;
+    errors.time = new Date();
     return (
-      <div id="side-nav" className={hideSideNav}>
+      <div id="side-nav">
+        <div className="errors">
+          <ErrorMessage
+            errors={errors}
+          />
+        </div>
         <Link to="/" className="new-message">
           <i className="ion-plus-circled" />
           New Message
@@ -89,26 +95,28 @@ export class SideNav extends React.Component {
 SideNav.propTypes = {
   logout: PropTypes.func.isRequired,
   token: PropTypes.string,
-  hideSideNav: PropTypes.string,
   getContacts: PropTypes.func.isRequired,
   contacts: PropTypes.shape({
     number: PropTypes.string
+  }),
+  errors: PropTypes.shape({
+    message: PropTypes.string
   }),
 };
 
 SideNav.defaultProps = {
   token: '',
   contacts: {},
-  hideSideNav: '',
+  errors: {},
 };
 
 export const mapStateToProps = ({
-  contacts: { contacts },
-  auth: { hideSideNav, token }
+  contacts: { contacts, errors },
+  auth: { token }
 }) => ({
   contacts,
-  hideSideNav,
-  token
+  token,
+  errors,
 });
 
 export default connect(mapStateToProps, {

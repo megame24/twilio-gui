@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const { User, sequelize, Message } = require('../database/models');
 const queryHelper = require('../helpers/queryHelper');
+const { throwError } = require('../helpers/errorHelper');
 
 const Op = Sequelize.Op;
 
@@ -22,7 +23,11 @@ UserController.getContactList = async (req, res, next) => {
 UserController.getUser = async (req, res, next) => {
   const { id } = req.params;
   try {
+    if (isNaN(Number(id))) {
+      throwError('User id can only be an integer', 400);
+    }
     const getUserResponse = await User.findById(id);
+    if (!getUserResponse) throwError('User not found', 404);
     const user = getUserResponse.dataValues;
     res.status(200).json({ user });
   } catch (err) {
@@ -37,6 +42,9 @@ UserController.updateUser = async (req, res, next) => {
   const updateField = [];
   if (name.trim()) updateField.push('name');
   try {
+    if (isNaN(Number(id))) {
+      throwError('User id can only be an integer', 400);
+    }
     const updateUserResponse = await User.update(
       { name },
       {
@@ -59,6 +67,9 @@ UserController.getContactMessages = async (req, res, next) => {
   limit = limit <= 30 ? limit : 30;
   const offset = page > 0 ? ((page - 1) * limit) : 0;
   try {
+    if (isNaN(Number(contactId))) {
+      throwError('User id can only be an integer', 400);
+    }
     const messageResponse = await Message.findAll({
       limit,
       offset,
