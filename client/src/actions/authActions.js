@@ -11,8 +11,8 @@ const logout = () => ({
 });
 
 const getAvailableNums = () => ({
-  type: types.GET_AVAILABLE_NUMBERS,
-  payload: axiosInstance().get('/numbers'),
+  type: types.GET_AVAILABLE_PHONE_NUMBERS,
+  payload: axiosInstance().get('/phoneNumbers'),
 });
 
 export default {

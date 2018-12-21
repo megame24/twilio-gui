@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing Loading component Should render as expected 1`] = `
+<Dimmer
+  active={true}
+  page={true}
+>
+  <Loader
+    size="medium"
+  />
+</Dimmer>
+`;

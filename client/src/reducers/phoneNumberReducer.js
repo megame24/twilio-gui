@@ -1,7 +1,7 @@
 import types from '../actions/actionTypes';
 
 const {
-  GET_AVAILABLE_NUMBERS
+  GET_AVAILABLE_PHONE_NUMBERS
 } = types;
 
 export const initialState = {
@@ -16,12 +16,12 @@ export const initialState = {
 
 export default (state = initialState, action = {}) => {
   switch (action.type) {
-  case `${GET_AVAILABLE_NUMBERS}_LOADING`:
+  case `${GET_AVAILABLE_PHONE_NUMBERS}_LOADING`:
     return {
       ...state,
       isLoading: true,
     };
-  case `${GET_AVAILABLE_NUMBERS}_SUCCESS`:
+  case `${GET_AVAILABLE_PHONE_NUMBERS}_SUCCESS`:
     return {
       ...state,
       isLoading: false,
@@ -31,7 +31,7 @@ export default (state = initialState, action = {}) => {
       },
       availableNums: action.payload.data.availableNumbers,
     };
-  case `${GET_AVAILABLE_NUMBERS}_FAILURE`:
+  case `${GET_AVAILABLE_PHONE_NUMBERS}_FAILURE`:
     return {
       ...state,
       isLoading: false,

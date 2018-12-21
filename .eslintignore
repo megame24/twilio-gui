@@ -1,7 +1,8 @@
 /node_modules/**
 /coverage/**
 server/database/**
-server/test/**/*.test.js
+server/tests/**/*.test.js
 .env
 webpack.config.js
 client/tests/**/*.test.js
+client/node_modules/**

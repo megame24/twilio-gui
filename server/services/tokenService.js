@@ -13,7 +13,7 @@ const tokenService = {
   /**
    * Verify token
    * @param {String} token - token
-   * @returns {null} null
+   * @returns {undefined}
    */
   verifyToken(token) {
     try {

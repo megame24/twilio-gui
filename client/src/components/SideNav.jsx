@@ -13,7 +13,7 @@ import ErrorMessage from './ErrorMessage';
 export class SideNav extends React.Component {
   /**
    * component did mount
-   * @returns {null} null
+   * @returns {undefined}
    */
   componentDidMount() {
     const { getContacts, contacts } = this.props;
@@ -25,7 +25,7 @@ export class SideNav extends React.Component {
   /**
    * component will receive props
    * @param {Object} nextProps
-   * @returns {null} null
+   * @returns {undefined}
    */
   componentWillReceiveProps(nextProps) {
     const { getContacts, token } = this.props;
@@ -35,6 +35,7 @@ export class SideNav extends React.Component {
   }
 
   /**
+   * logout
    * @returns {undefined}
    */
   logout = () => {
@@ -44,7 +45,7 @@ export class SideNav extends React.Component {
   }
 
   /**
-   * @return {undefined}
+   * @return {Function} JSX function
    */
   render() {
     const { contacts, errors } = this.props;
@@ -71,7 +72,7 @@ export class SideNav extends React.Component {
                     <i className="ion-android-contact" />
                     <span>
                       {contact.name && <p className="name">{contact.name}</p>}
-                      <p>{contact.number}</p>
+                      <p>{contact.phoneNumber}</p>
                     </span>
                     {
                       contact.notifications
@@ -97,7 +98,7 @@ SideNav.propTypes = {
   token: PropTypes.string,
   getContacts: PropTypes.func.isRequired,
   contacts: PropTypes.shape({
-    number: PropTypes.string
+    phoneNumber: PropTypes.string
   }),
   errors: PropTypes.shape({
     message: PropTypes.string

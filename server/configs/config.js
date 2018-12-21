@@ -9,6 +9,7 @@ module.exports = {
   test: {
     use_env_variable: 'DATABASE_URL_TEST',
     dialect: 'postgres',
+    logging: false,
   },
   staging: {
     use_env_variable: 'DATABASE_URL_STAGING',

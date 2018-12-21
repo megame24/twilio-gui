@@ -18,7 +18,7 @@ router.post(
   sendMessageToNewContact
 );
 router.post(
-  '/messages/',
+  '/messages',
   authenticateUser,
   validateOldContactMessage,
   sendMessageToOldContact

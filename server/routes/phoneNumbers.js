@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const NumberController = require('../controllers/NumberController');
+const NumberController = require('../controllers/PhoneNumberController');
 
 const {
   getAvailableNumbers
@@ -7,6 +7,6 @@ const {
 
 const router = Router();
 
-router.get('/numbers', getAvailableNumbers);
+router.get('/phoneNumbers', getAvailableNumbers);
 
 module.exports = router;

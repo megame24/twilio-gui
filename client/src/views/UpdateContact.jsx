@@ -13,6 +13,7 @@ import ErrorMessage from '../components/ErrorMessage';
  */
 export class UpdateContact extends React.Component {
   /**
+   * Constructor function
    * @returns {undefined}
    */
   constructor() {
@@ -30,12 +31,12 @@ export class UpdateContact extends React.Component {
 
   /**
    * component did mount
-   * @returns {null} null
+   * @returns {undefined}
    */
   componentDidMount() {
-    const { match: { params }, getContactNotActive } = this.props;
+    const { match: { params }, getContactToBeUpdated } = this.props;
     this.id = params.id;
-    getContactNotActive(this.id);
+    getContactToBeUpdated(this.id);
   }
 
   /**
@@ -44,12 +45,12 @@ export class UpdateContact extends React.Component {
    * @returns {undefined}
    */
   componentWillReceiveProps(nextProps) {
-    const { notActiveContact } = this.props;
-    if (nextProps.notActiveContact !== notActiveContact) {
+    const { contactToBeUpdated } = this.props;
+    if (nextProps.contactToBeUpdated !== contactToBeUpdated) {
       this.setState({
         formData: {
-          name: nextProps.notActiveContact.name || '',
-          number: nextProps.notActiveContact.number,
+          name: nextProps.contactToBeUpdated.name || '',
+          phoneNumber: nextProps.contactToBeUpdated.phoneNumber,
         }
       });
     }
@@ -95,19 +96,19 @@ export class UpdateContact extends React.Component {
   }
 
   /**
-   * @return {undefined}
+   * @return {Function} JSX function
    */
   render() {
     const { formData: { name } } = this.state;
     const { isLoading, success,
-      notActiveContactErrs, contactUpdateErrs } = this.props;
-    notActiveContactErrs.time = new Date();
+      contactToBeUpdatedErrs, contactUpdateErrs } = this.props;
+    contactToBeUpdatedErrs.time = new Date();
     contactUpdateErrs.time = new Date();
     return (
       <div id="update-contact">
         <div className="errors">
           <ErrorMessage
-            errors={notActiveContactErrs}
+            errors={contactToBeUpdatedErrs}
           />
           <ErrorMessage
             errors={contactUpdateErrs}
@@ -142,16 +143,16 @@ UpdateContact.propTypes = {
   resetSuccess: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   success: PropTypes.bool.isRequired,
-  getContactNotActive: PropTypes.func.isRequired,
+  getContactToBeUpdated: PropTypes.func.isRequired,
   updateContact: PropTypes.func.isRequired,
-  notActiveContactErrs: PropTypes.shape({
+  contactToBeUpdatedErrs: PropTypes.shape({
     message: PropTypes.string
   }),
   contactUpdateErrs: PropTypes.shape({
     message: PropTypes.string
   }),
-  notActiveContact: PropTypes.shape({
-    number: PropTypes.string,
+  contactToBeUpdated: PropTypes.shape({
+    phoneNumber: PropTypes.string,
     name: PropTypes.string,
   }),
   match: PropTypes.shape({
@@ -162,27 +163,27 @@ UpdateContact.propTypes = {
 };
 
 UpdateContact.defaultProps = {
-  notActiveContact: {
+  contactToBeUpdated: {
     name: '',
-    number: '',
+    phoneNumber: '',
   },
-  notActiveContactErrs: {},
+  contactToBeUpdatedErrs: {},
   contactUpdateErrs: {},
 };
 
 export const mapStateToProps = ({
-  activeContact: { notActiveContact, errors: notActiveContactErrs },
+  activeContact: { contactToBeUpdated, errors: contactToBeUpdatedErrs },
   contactUpdate: { success, isLoading, errors: contactUpdateErrs }
 }) => ({
   success,
   isLoading,
-  notActiveContact,
-  notActiveContactErrs,
+  contactToBeUpdated,
+  contactToBeUpdatedErrs,
   contactUpdateErrs
 });
 
 export default connect(mapStateToProps, {
-  getContactNotActive: contactActions.getContactNotActive,
+  getContactToBeUpdated: contactActions.getContactToBeUpdated,
   updateContact: contactActions.updateContact,
   resetSuccess: generalActions.resetSuccess,
 })(UpdateContact);

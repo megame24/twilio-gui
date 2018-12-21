@@ -1,5 +1,10 @@
 import isPromise from 'is-promise';
 
+/**
+ * Error middleware
+ * @param {Function} next next function in the middleware chain
+ * @returns {Function} next call
+ */
 const errorMiddleware = () => next => (action) => {
   if (!action) return;
   if (isPromise(action.payload)) {

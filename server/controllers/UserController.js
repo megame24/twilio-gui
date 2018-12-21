@@ -5,8 +5,20 @@ const { throwError } = require('../helpers/errorHelper');
 
 const Op = Sequelize.Op;
 
+/**
+ * UserController constructor
+ * @returns {undefined}
+ */
 function UserController() { }
 
+/**
+ * Get contact list
+ * @param {Object} req request object
+ * @param {Object} res response object
+ * @param {Function} next next function in the
+ * middleware chain
+ * @returns {Object} response object
+ */
 UserController.getContactList = async (req, res, next) => {
   const { owner } = req.body;
   try {
@@ -20,6 +32,14 @@ UserController.getContactList = async (req, res, next) => {
   }
 };
 
+/**
+ * Get a user by id
+ * @param {Object} req request object
+ * @param {Object} res response object
+ * @param {Function} next next function in the
+ * middleware chain
+ * @returns {Object} response object
+ */
 UserController.getUser = async (req, res, next) => {
   const { id } = req.params;
   try {
@@ -35,7 +55,14 @@ UserController.getUser = async (req, res, next) => {
   }
 };
 
-
+/**
+ * Update a user
+ * @param {Object} req request object
+ * @param {Object} res response object
+ * @param {Function} next next function in the
+ * middleware chain
+ * @returns {Object} response object
+ */
 UserController.updateUser = async (req, res, next) => {
   const { name = '' } = req.body;
   const { id } = req.params;
@@ -59,6 +86,14 @@ UserController.updateUser = async (req, res, next) => {
   }
 };
 
+/**
+ * Get all messages belonging to a contact
+ * @param {Object} req request object
+ * @param {Object} res response object
+ * @param {Function} next next function in the
+ * middleware chain
+ * @returns {Object} response object
+ */
 UserController.getContactMessages = async (req, res, next) => {
   const { id: contactId } = req.params;
   let { limit } = req.query;
@@ -79,12 +114,12 @@ UserController.getContactMessages = async (req, res, next) => {
         {
           model: User,
           as: 'to',
-          attributes: ['id', 'name', 'number']
+          attributes: ['id', 'name', 'phoneNumber']
         },
         {
           model: User,
           as: 'from',
-          attributes: ['id', 'name', 'number']
+          attributes: ['id', 'name', 'phoneNumber']
         },
       ],
       where: {

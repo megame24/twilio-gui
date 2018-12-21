@@ -39,9 +39,11 @@ app.all('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
 });
 
-server.listen(port, () => {
-  console.log(`Server started on port: ${port}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  server.listen(port, () => {
+    console.log(`Server started on port: ${port}`);
+  });
+}
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -94,3 +96,5 @@ global.io.on('connection', (socket) => {
   socketInstance.saveActiveContact();
   socketInstance.onDisconnect();
 });
+
+module.exports = app;

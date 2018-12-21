@@ -20,7 +20,7 @@ export class NewContactMsg extends React.Component {
     super();
     this.state = {
       formData: {
-        number: '',
+        phoneNumber: '',
         message: '',
       }
     };
@@ -69,10 +69,10 @@ export class NewContactMsg extends React.Component {
   }
 
   /**
-   * @return {undefined}
+   * @return {Function} JSX function
    */
   render() {
-    const { formData: { number, message } } = this.state;
+    const { formData: { phoneNumber, message } } = this.state;
     const { errors, isLoading, success, sentTo: { id } } = this.props;
     errors.time = new Date();
     return (
@@ -88,8 +88,8 @@ export class NewContactMsg extends React.Component {
             type="text"
             placeholder="Phone number"
             className="input"
-            name="number"
-            value={number}
+            name="phoneNumber"
+            value={phoneNumber}
             onChange={this.handleChange}
           />
         </div>
@@ -120,7 +120,7 @@ NewContactMsg.propTypes = {
     message: PropTypes.string
   }),
   sentTo: PropTypes.shape({
-    number: PropTypes.string
+    phoneNumber: PropTypes.string
   })
 };
 

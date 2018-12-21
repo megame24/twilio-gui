@@ -4,10 +4,11 @@ import types from '../actions/actionTypes';
 import axiosInstance from '../services/axiosInstance';
 
 /**
- * Socket
+ * Socket class
 */
 class Socket {
   /**
+   * Constructor function
    * @param {Object} socket
    * @returns {undefined}
    */
@@ -17,6 +18,7 @@ class Socket {
   }
 
   /**
+   * Handle received messages(data)
    * @param {Function} cb
    * @returns {undefined}
    */
@@ -27,6 +29,7 @@ class Socket {
   }
 
   /**
+   * Send out received message
    * @param {Object} state
    * @param {String} token
    * @returns {undefined}
@@ -62,11 +65,13 @@ class Socket {
   };
 
   /**
+   * Get socket id
    * @returns {undefined}
    */
   getSocketId = () => this.socket.id;
 
   /**
+   * Simulate disconnection
    * @returns {undefined}
    */
   disconnect = () => {
@@ -74,6 +79,7 @@ class Socket {
   }
 
   /**
+   * Check for connection
    * @param {Function} cb
    * @returns {undefined}
    */
@@ -88,6 +94,7 @@ class Socket {
   }
 
   /**
+   * Emit a message
    * @param {String} hook
    * @param {String} message
    * @param {Function} cb

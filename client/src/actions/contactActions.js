@@ -11,8 +11,8 @@ const getContact = id => ({
   payload: axiosInstance().get(`/users/${id}`)
 });
 
-const getContactNotActive = id => ({
-  type: types.GET_CONTACT_NOT_ACTIVE,
+const getContactToBeUpdated = id => ({
+  type: types.GET_CONTACT_TO_BE_UPDATED,
   payload: axiosInstance().get(`/users/${id}`)
 });
 
@@ -42,5 +42,5 @@ export default {
   appendToContactMessages,
   updateContact,
   clearActiveContact,
-  getContactNotActive
+  getContactToBeUpdated
 };

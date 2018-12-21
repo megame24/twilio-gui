@@ -3,7 +3,7 @@ import types from '../actions/actionTypes';
 const {
   GET_CONTACTS, CLEAR_ACTIVE_CONTACT, GET_CONTACT, GET_CONTACT_MESSAGES,
   APPEND_TO_CONTACT_MESSAGES, UPDATE_CONTACT,
-  GET_CONTACT_NOT_ACTIVE, RESET_SUCCESS
+  GET_CONTACT_TO_BE_UPDATED, RESET_SUCCESS
 } = types;
 
 export const initialContactsState = {
@@ -63,11 +63,11 @@ export const initialActiveContactState = {
   },
   activeContact: {
     name: '',
-    number: '',
+    phoneNumber: '',
   },
-  notActiveContact: {
+  contactToBeUpdated: {
     name: '',
-    number: '',
+    phoneNumber: '',
   }
 };
 
@@ -80,11 +80,11 @@ export const activeContact = (
       ...state,
       activeContact: {
         name: '',
-        number: '',
+        phoneNumber: '',
       }
     };
   case `${GET_CONTACT}_LOADING`:
-  case `${GET_CONTACT_NOT_ACTIVE}_LOADING`:
+  case `${GET_CONTACT_TO_BE_UPDATED}_LOADING`:
     return {
       ...state,
       isLoading: true,
@@ -99,7 +99,7 @@ export const activeContact = (
       },
       activeContact: action.payload.data.user,
     };
-  case `${GET_CONTACT_NOT_ACTIVE}_SUCCESS`:
+  case `${GET_CONTACT_TO_BE_UPDATED}_SUCCESS`:
     return {
       ...state,
       isLoading: false,
@@ -107,10 +107,10 @@ export const activeContact = (
         message: '',
         response: {},
       },
-      notActiveContact: action.payload.data.user,
+      contactToBeUpdated: action.payload.data.user,
     };
   case `${GET_CONTACT}_FAILURE`:
-  case `${GET_CONTACT_NOT_ACTIVE}_FAILURE`:
+  case `${GET_CONTACT_TO_BE_UPDATED}_FAILURE`:
     return {
       ...state,
       isLoading: false,
@@ -203,14 +203,6 @@ export const contactUpdate = (
     return {
       ...state,
       success: false,
-    };
-  case `${APPEND_TO_CONTACT_MESSAGES}`:
-    return {
-      ...state,
-      messages: {
-        ...state.messages,
-        [action.payload.id]: action.payload
-      }
     };
   case `${UPDATE_CONTACT}_LOADING`:
     return {

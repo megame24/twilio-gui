@@ -6,7 +6,7 @@ import {
 
 /**
  * export all the watchers to the sagaMiddleware
- * @returns {null} null
+ * @returns {undefined}
  */
 export default function* rootSaga() {
   yield all([

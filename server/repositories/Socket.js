@@ -4,15 +4,30 @@ const tokenService = require('../services/tokenService');
 const socketsList = require('./SocketsList');
 const clientsList = require('./ClientsList');
 
-
+/**
+ * Socket constructor function
+ * @param {Object} socket socket object
+ * @returns {undefined}
+ */
 function Socket(socket) {
   this.socket = socket;
 }
 
+
+/**
+ * Emit data to the client(s)
+ * @param {String} hook socket hook
+ * @param {Object} data data to be emitted
+ * @returns {Object} emit object
+ */
 Socket.prototype.emit = function (hook, data) {
-  this.socket.emit(hook, data);
+  return this.socket.emit(hook, data);
 };
 
+/**
+ * Save the details of the active(chat) contact on the client
+ * @returns {undefined}
+ */
 Socket.prototype.saveActiveContact = function () {
   this.socket.on('active contact', (data) => {
     const { contactId, token } = data;
@@ -33,6 +48,10 @@ Socket.prototype.saveActiveContact = function () {
   });
 };
 
+/**
+ * Handle socket disconnect
+ * @returns {undefined}
+ */
 Socket.prototype.onDisconnect = function () {
   this.socket.on('disconnect', () => {
     const socketId = this.socket.id;
@@ -44,6 +63,10 @@ Socket.prototype.onDisconnect = function () {
   });
 };
 
+/**
+ * Simulate socket disconnect
+ * @returns {undefined}
+ */
 Socket.prototype.disconnectClient = function () {
   this.socket.on('end', () => {
     const socketId = this.socket.id;
@@ -55,6 +78,10 @@ Socket.prototype.disconnectClient = function () {
   });
 };
 
+/**
+ * Save client data on connect
+ * @returns {undefined}
+ */
 Socket.prototype.saveClientData = function () {
   this.socket.on('socket connect', (data) => {
     const { socketId, token } = data;

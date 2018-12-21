@@ -4,8 +4,8 @@ import socket from '../repositories/Socket';
 import store from '../store';
 
 /**
- * @param {Object} action action
- * @returns {null} null
+ * Open a socket connection on login
+ * @returns {undefined}
  */
 function connectSocketOnLoginSuccess() {
   const state = store.getState();
@@ -26,14 +26,16 @@ function connectSocketOnLoginSuccess() {
 }
 
 /**
- * @returns {null} null
+ * Watch for login success action type
+ * @returns {undefined}
  */
 export function* watchLoginSuccess() {
   yield takeEvery(`${types.LOGIN}_SUCCESS`, connectSocketOnLoginSuccess);
 }
 
 /**
- * @returns {null} null
+ * Watch for persist login action type
+ * @returns {undefined}
  */
 export function* watchOnPersistLogin() {
   yield takeEvery(types.PERSIST_LOGIN, connectSocketOnLoginSuccess);

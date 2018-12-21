@@ -35,11 +35,16 @@ export class ErrorMessage extends React.Component {
    * @returns {undefined}
    */
   dismissOnTimeout = () => {
-    setTimeout(() => {
-      if (this._isMounted) {
-        this.setState({ visible: false });
-      }
-    }, 10000);
+    let timeout = 10000;
+    if (process.env.NODE_ENV === 'test') timeout = 1;
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (this._isMounted) {
+          this.setState({ visible: false });
+        }
+        resolve();
+      }, timeout);
+    });
   }
 
   /**
@@ -56,7 +61,7 @@ export class ErrorMessage extends React.Component {
   }
 
   /**
-   * @returns {undefined}
+   * @returns {Function} JSX function
    */
   render() {
     const { errors } = this.props;

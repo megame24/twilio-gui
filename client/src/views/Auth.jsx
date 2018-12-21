@@ -4,7 +4,7 @@ import { PropTypes } from 'prop-types';
 import Input from '../components/Input';
 import Loading from '../components/Loading';
 import authActions from '../actions/authActions';
-import numberActions from '../actions/numberActions';
+import phoneNumberActions from '../actions/phoneNumberActions';
 import ErrorMessage from '../components/ErrorMessage';
 
 /**
@@ -19,7 +19,7 @@ export class Auth extends React.Component {
     this.state = {
       formData: {
         password: '',
-        number: '',
+        phoneNumber: '',
       },
     };
     this.handleChange = this.handleChange.bind(this);
@@ -29,7 +29,7 @@ export class Auth extends React.Component {
 
   /**
    * component did mount
-   * @returns {null} null
+   * @returns {undefined}
    */
   componentDidMount() {
     const { getAvailableNums } = this.props;
@@ -44,7 +44,7 @@ export class Auth extends React.Component {
     const { availableNums } = this.props;
     if (nextProps.availableNums !== availableNums) {
       this.setState({
-        formData: { password: '', number: nextProps.availableNums[0] }
+        formData: { password: '', phoneNumber: nextProps.availableNums[0] }
       });
     }
   }
@@ -79,10 +79,10 @@ export class Auth extends React.Component {
   }
 
   /**
-   * @return {undefined}
+   * @return {Function} JSX function
    */
   render() {
-    const { formData: { password, number } } = this.state;
+    const { formData: { password, phoneNumber } } = this.state;
     const { isLoading, availableNums, errors } = this.props;
     errors.time = new Date();
     return (
@@ -94,16 +94,16 @@ export class Auth extends React.Component {
         </div>
         <Loading isLoading={isLoading} />
         <form onSubmit={this.handleSubmit}>
-          <label htmlFor="number">Select a number</label>
+          <label htmlFor="phoneNumber">Select a phoneNumber</label>
           {
             availableNums.map(num => (
               <span key={num}>
                 <input
                   type="radio"
-                  name="number"
+                  name="phoneNumber"
                   onChange={this.handleChange}
                   value={num}
-                  checked={number === num}
+                  checked={phoneNumber === num}
                 />
                 &nbsp;
                 {num}
@@ -146,7 +146,7 @@ Auth.defaultProps = {
 };
 
 export const mapStateToProps = ({
-  number: { availableNums },
+  phoneNumber: { availableNums },
   auth: { isLoading, errors },
 }) => ({
   availableNums,
@@ -156,5 +156,5 @@ export const mapStateToProps = ({
 
 export default connect(mapStateToProps, {
   login: authActions.login,
-  getAvailableNums: numberActions.getAvailableNums,
+  getAvailableNums: phoneNumberActions.getAvailableNums,
 })(Auth);

@@ -4,7 +4,7 @@ import {
 } from './contactReducer';
 import sentMessage from './sentMessageReducer';
 import auth from './authReducer';
-import number from './numberReducer';
+import phoneNumber from './phoneNumberReducer';
 import socket from './socketReducer';
 
 export default combineReducers({
@@ -14,6 +14,6 @@ export default combineReducers({
   contactMessages,
   contactUpdate,
   auth,
-  number,
+  phoneNumber,
   socket,
 });

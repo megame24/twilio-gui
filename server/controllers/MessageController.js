@@ -10,19 +10,30 @@ const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
 
 const client = twilio(twilioAccountSid, twilioAuthToken);
 
+/**
+ * MessageController constructor
+ * @returns {undefined}
+ */
 function MessageController() { }
 
+/**
+ * Send message to new client
+ * @param {Object} req request object
+ * @param {Object} res response object
+ * @param {Function} next next function in the
+ * middleware chain
+ * @returns {Object} response object
+ */
 MessageController.sendMessageToNewContact = async (req, res, next) => {
   const { owner} = req.body;
-  let { number, message: body } = req.body;
-  number = number.trim();
+  let { phoneNumber, message: body } = req.body;
+  phoneNumber = phoneNumber.trim();
   body = body.trim();
   try {
     // create user and save the contact if it doesn't already exist
     const findOrCreateUserRes = await User.findOrCreate({
-      where: { number }
+      where: { phoneNumber }
     });
-    if (!findOrCreateUserRes) throwError('User not found', 404);
     const user = findOrCreateUserRes[0].dataValues;
     const createContactResponse = await Contact.findOrCreate({
       where: {
@@ -38,7 +49,8 @@ MessageController.sendMessageToNewContact = async (req, res, next) => {
       });
     }
     // send the message to twilio
-    await twilioService.sendMessage(client, body, number, owner.number);
+    await twilioService
+      .sendMessage(client, body, phoneNumber, owner.phoneNumber);
 
     // save the message
     await Message.create({
@@ -53,19 +65,28 @@ MessageController.sendMessageToNewContact = async (req, res, next) => {
   }
 };
 
+/**
+ * Send message to old client
+ * @param {Object} req request object
+ * @param {Object} res response object
+ * @param {Function} next next function in the
+ * middleware chain
+ * @returns {Object} response object
+ */
 MessageController.sendMessageToOldContact = async (req, res, next) => {
   const { contactId, owner } = req.body;
   let { message: body } = req.body;
   body = body.trim();
   try {
     if (isNaN(Number(contactId))) {
-      throwError('User id can only be an integer', 400);
+      throwError('Contact id can only be an integer', 400);
     }
     const contact = await User.findById(contactId);
-    if (!contact) throwError('User not found', 404);
-    const number = contact.dataValues.number;
+    if (!contact) throwError('Contact not found', 404);
+    const phoneNumber = contact.dataValues.phoneNumber;
     // send the message to twilio
-    await twilioService.sendMessage(client, body, number, owner.number);
+    await twilioService
+      .sendMessage(client, body, phoneNumber, owner.phoneNumber);
 
     // save the message
     await Message.create({
@@ -79,18 +100,26 @@ MessageController.sendMessageToOldContact = async (req, res, next) => {
   }
 };
 
+/**
+ * Receive message
+ * @param {Object} req request object
+ * @param {Object} res response object
+ * @param {Function} next next function in the
+ * middleware chain
+ * @returns {Object} response object
+ */
 MessageController.receiveMessage = async (req, res, next) => {
   const {
-    From: number, Body: body, To: ownerNumber, MediaUrl0: media
+    From: phoneNumber, Body: body, To: ownerNumber, MediaUrl0: media
   } = req.body;
   try {
     const findOwnerResponse = await User.findOne({ where: {
-      number: ownerNumber,
+      phoneNumber: ownerNumber,
     }});
     if (!findOwnerResponse) throwError('User not found', 404);
     const ownerId = findOwnerResponse.dataValues.id;
     const findOrCreateUserRes = await User.findOrCreate({
-      where: { number }
+      where: { phoneNumber }
     });
     const contactId = findOrCreateUserRes[0].dataValues.id;
     // save contact if necessary

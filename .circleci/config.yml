@@ -1,0 +1,55 @@
+version: 2
+
+jobs:
+  build:
+    docker: 
+      - image: circleci/node:8.11.3
+        environment:
+          DATABASE_URL_TEST: postgresql://root@localhost/circle_test
+    
+      - image: circleci/postgres:9.6.5-alpine-ram
+      
+    working_directory: ~/repo
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: api-dependencies-{{ checksum "package-lock.json" }}
+      - restore_cache:
+          key: client-dependencies-{{ checksum "client/package-lock.json" }}
+
+      - run:
+          name: npm install client
+          working_directory: ~/repo/client/
+          command: npm install
+
+      - run:
+          name: npm install api
+          working_directory: ~/repo
+          command: npm install
+
+      - save_cache:
+          key: api-dependencies-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/repo/node_modules
+
+      - save_cache:
+          key: client-dependencies-{{ checksum "client/package-lock.json" }}
+          paths:
+            - ~/repo/client/node_modules
+            
+      - run:
+          name: "Test: Api"
+          working_directory: ~/repo/
+          command: |
+            npm test -- --clearCache
+            npm test
+            
+      - run:
+          name: "Test: client"
+          working_directory: ~/repo/client/
+          command: |
+            npm test -- --clearCache
+            npm test -- -i
+
+

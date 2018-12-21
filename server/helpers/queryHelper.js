@@ -1,6 +1,12 @@
+/**
+ * The the contact list for the specified user alongside
+ * Their notifications
+ * @param {Number} ownerId user id
+ * @returns {Object} an array of contacts
+ */
 const getContactListWithNotifn = (ownerId) => `
-SELECT "id", "name", "number", "notifications" FROM (
-  SELECT "id", "name", "number", "notifications" FROM "Users" LEFT JOIN (
+SELECT "id", "name", "phoneNumber", "notifications" FROM (
+  SELECT "id", "name", "phoneNumber", "notifications" FROM "Users" LEFT JOIN (
     SELECT "userId", count(*) "notifications" FROM (
       SELECT "readTime", "userId" FROM "ReadTimes"
     ) "readtimes" JOIN "Messages" ON "Messages"."fromId" = "readtimes"."userId" 

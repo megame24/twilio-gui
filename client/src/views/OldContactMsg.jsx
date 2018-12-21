@@ -28,12 +28,13 @@ export class OldContactMsg extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.scrollToBottom = this.scrollToBottom.bind(this);
   }
 
 
   /**
    * component did mount
-   * @returns {null} null
+   * @returns {undefined}
    */
   componentDidMount() {
     const {
@@ -50,14 +51,12 @@ export class OldContactMsg extends React.Component {
       }, () => {
         getContacts();
       });
-    const objDiv = document.getElementById('chat-messages');
-    objDiv.scrollTop = objDiv.scrollHeight;
   }
 
   /**
    * component will receive props
    * @param {Object} nextProps
-   * @returns {null} null
+   * @returns {undefined}
    */
   componentWillReceiveProps(nextProps) {
     const {
@@ -84,7 +83,7 @@ export class OldContactMsg extends React.Component {
 
   /**
    * component did update
-   * @returns {null} null
+   * @returns {undefined}
    */
   componentDidUpdate() {
     this.scrollToBottom();
@@ -136,12 +135,12 @@ export class OldContactMsg extends React.Component {
    * Handle scroll to bottom
    * @returns {undefined}
    */
-  scrollToBottom = () => {
+  scrollToBottom() {
     this.el.scrollIntoView({ behavior: 'smooth' });
   }
 
   /**
-   * @return {undefined}
+   * @return {Function} JSX function
    */
   render() {
     const {
@@ -169,7 +168,7 @@ export class OldContactMsg extends React.Component {
           <h3>
             {activeContact.name}
             <br />
-            {activeContact.number}
+            {activeContact.phoneNumber}
           </h3>
           <Link
             to={`/contacts/${activeContact.id}/update`}
@@ -233,7 +232,7 @@ OldContactMsg.propTypes = {
   activeContactIsLoading: PropTypes.bool.isRequired,
   contactMsgsIsLoading: PropTypes.bool.isRequired,
   activeContact: PropTypes.shape({
-    number: PropTypes.string
+    phoneNumber: PropTypes.string
   }),
   messages: PropTypes.shape({
     id: PropTypes.string
