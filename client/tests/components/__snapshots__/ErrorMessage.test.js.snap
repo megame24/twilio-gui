@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing ErrorMessage component Testing component methods Should render as expected when visible is false 1`] = `""`;
+
+exports[`Testing ErrorMessage component Testing component methods Should render as expected when visible is true 1`] = `
+<Message
+  header="error!!"
+  negative={true}
+  onDismiss={[Function]}
+/>
+`;

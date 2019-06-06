@@ -1,0 +1,278 @@
+/* =============================== 
+    INITIAL SETUP AND UTILITIES
+   =============================== */
+  /* #react-container {
+    position: relative;
+    width: 100%;
+  } */
+   
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Lato", Arial, Helvetica, sans-serif;
+  }
+  body {
+    color: #dfdfdf;
+    font-weight: normal;
+    background: #121212;
+    position: relative;
+  }
+  a {
+    color: #3ea6ff;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  p,
+  textarea {
+    line-height: 1.4;
+  }
+  .clearfix {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  .hide {
+    display: none;
+  }
+  .form-input {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    padding: 15px 10px;
+    border: 1px solid #e7e7e7;
+    margin-bottom: 15px;
+    border-radius: 3px;
+  }
+  .form-input[type="submit"] {
+    font-size: 19px;
+    cursor: pointer;
+  }
+  h2 {
+    margin-bottom: 5px;
+  }
+  li {
+    list-style-type: none;
+  }
+
+
+/* ==================== 
+      SIDE NAV
+     ==================== */
+
+#side-nav {
+  height: 100vh;
+  background-color: #191919;
+  width: 22%;
+  overflow: auto;
+  padding: 20px;
+  position: absolute;
+  left: 0;
+}
+#side-nav.hid {
+  display: none;
+}
+.new-message, .update-contact {
+  display: inline-block;
+  margin-bottom: 10px;
+  margin-top: 10px
+}
+.new-message i, .update-contact  i {
+  font-size: 120%;
+  margin-right: 5px;
+}
+.contact-list a {
+  color: inherit;
+}
+.contact-list a:hover {
+  color: rgb(173, 173, 173);
+}
+.contact-list ul {
+  font-weight: 100;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+.contact-list h2 {
+  font-weight: 100;
+}
+.contact-list li {
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+.contact {
+  display: flex;
+  align-items: top;
+  width: 100%;
+  position: relative;
+  /* justify-content: space-between; */
+}
+
+.contact p {
+  margin: 0;
+  padding: 0;
+}
+
+.contact p:nth-of-type(1) {
+  margin-bottom: 3px;
+}
+
+.contact > i {
+  margin-right: 8px;
+}
+
+.notifn i {
+  position: absolute;
+  right: 0;
+  font-size: 130%;
+  color: rgb(197, 11, 11);
+}
+
+/* ==================== 
+      CONTACT MSG
+     ==================== */
+
+#new-contact, #old-contact, #update-contact {
+  width: 78%;
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 10px 20px;
+}
+.contact-info {
+  height: 100px;
+  background-color: #121212;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.contact-info h3 {
+  font-weight: 100;
+}
+.input {
+  background-color: #121212;
+  border: 1px solid #343434;
+  color: #dfdfdf;
+  font-weight: 100;
+  width: 100%;
+  padding: 10px 20px;
+}
+.input::placeholder {
+  color: #757575;
+}
+.input:focus {
+  outline: none;
+  border: 1px solid #335f85;
+}
+.input::selection {
+  color: #d4d4d4;
+  background-color: #52789f;
+  padding: 2px;
+}
+#old-contact .contact-info,
+#old-contact .send-message {
+  flex-grow: 0.025;
+}
+#old-contact #chat-box {
+  flex-grow: 9.95;
+  overflow:   none;
+  position:   relative;
+}
+#old-contact #chat-messages {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  position:   absolute;
+  bottom:     0;
+  max-height: 100%;
+  width: 100%;
+}
+#chat-messages div:not(.scroll-bottom) {
+  padding: 10px;
+  border-radius: 5px;
+  min-width: 10%;
+  max-width: 80%;
+  margin: 10px 0;
+}
+#chat-messages .to-me {
+  background-color: #343434;
+  align-self: flex-start;
+}
+#chat-messages .from-me {
+  background-color: #335f85;
+  align-self: flex-end;
+}
+#chat-messages img {
+  width: 250px;
+  height: auto;
+}
+
+#update-contact input {
+  margin: 10px;
+}
+
+
+.btn {
+  padding: 10px 20px;
+  text-align: center;
+  display: inline-block;
+  color: inherit;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.btn:hover {
+  color: white;
+  transition: background-color 0.3s, color 0.3s;
+}
+.btn-primary {
+  background-color: #4c759e;
+}
+.btn-primary:hover {
+  background-color: #42698f;
+}
+
+#login-form {
+  width: 60%;
+  margin: 70px auto;
+}
+#login-form form {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  justify-content: space-around;
+}
+#login-form label {
+  font-size: 150%;
+}
+
+.logout {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.ui.negative.message {
+  background-color: #aa403f;
+  box-shadow: none;
+  color: rgb(255, 228, 228);
+}
+
+.ui.negative.message .header {
+  color: rgb(255, 228, 228);
+}
+
+.errors {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+}
+.ui.message {
+  min-width: 300px;
+  opacity: 0.8;
+  padding: 15px;
+  padding-right: 30px;
+}

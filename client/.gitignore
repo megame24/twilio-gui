@@ -60,8 +60,7 @@ typings/
 # next.js build output
 .next
 
-.dist/
 
 src/playground.jsx
 
-latest.dump*
+dist/
